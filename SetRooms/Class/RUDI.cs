@@ -106,9 +106,54 @@ namespace SetRooms.Class
             return result;
         }
 
+        // http://www.codedigest.com/CodeDigest/172-How-to-Convert-SqlDataReader-object-to-DataTable-in-C---ADO-Net-.aspx
+        public static DataTable Read(SQLDBConnection myDB, string table_name, string cols = "*", string condition = null)
+        {
+            string query = null;
+            SqlDataReader readerCollection = null;
+            DataTable dt = new DataTable();
+
+            if (condition != null)
+            {
+                query = $"SELECT {cols} FROM {table_name} WHERE {condition}";
+            }
+            else
+            {
+                query = $"SELECT {cols} FROM {table_name}";
+            }
+
+            if (myDB.GetConnection())
+            {
+                myDB.CreateCMD();
+                myDB.SetSQLQuery(query);
+
+                try
+                {
+                    readerCollection = myDB.CMD.ExecuteReader();
+                    dt.Load(readerCollection);
+                }
+                catch (SqlException MySqlError)
+                {
+                    Console.WriteLine(MySqlError.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("ERROR Trying to connect");
+            }
+
+
+            return dt;
+        }
+
+
+
+
+        //-------------------------------------------------------------------------------------------------------------------------------------------------------
+
         //SELECT column1, column2, ... FROM table_name WHERE condition; 
         //https://stackoverflow.com/questions/41040189/fastest-way-to-map-result-of-sqldatareader-to-object
-        public static async Task<T> Read<T> (SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
+        public static async Task<T> Read2<T> (SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
         {
             string query = null;
             SqlDataReader readerCollection = null;
@@ -236,45 +281,7 @@ namespace SetRooms.Class
             return res;
         }
 
-        // http://www.codedigest.com/CodeDigest/172-How-to-Convert-SqlDataReader-object-to-DataTable-in-C---ADO-Net-.aspx
-        public static DataTable Read2(SQLDBConnection myDB, string table_name, string cols = "*", string condition = null)
-        {
-            string query = null;
-            SqlDataReader readerCollection = null;
-            DataTable dt = new DataTable();
-
-            if (condition != null)
-            {
-                query = $"SELECT {cols} FROM {table_name} WHERE {condition}";
-            }
-            else
-            {
-                query = $"SELECT {cols} FROM {table_name}";
-            }
-
-            if (myDB.GetConnection())
-            {
-                myDB.CreateCMD();
-                myDB.SetSQLQuery(query);
-
-                try
-                {
-                    readerCollection = myDB.CMD.ExecuteReader();
-                    dt.Load(readerCollection);
-                }
-                catch (SqlException MySqlError)
-                {
-                    Console.WriteLine(MySqlError.Message);
-                }
-            }
-            else
-            {
-                Console.WriteLine("ERROR Trying to connect");
-            }
-           
-
-            return dt;
-        }
+        
 
 
     }
