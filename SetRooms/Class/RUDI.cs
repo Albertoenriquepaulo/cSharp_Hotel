@@ -15,12 +15,13 @@ namespace SetRooms.Class
 {
     class RUDI
     {
-        const string INSERTINTO = "INSERT INTO ";//INSERT INTO table_name (column1, column2, column3, ...) VALUES(value1, value2, value3, ...);
+        const string INSERTINTO = "INSERT INTO ";
         const string DELETEFROM = "DELETE FROM ";
         public string table_name { get; set; }
         public string col { get; set; }
         public string value { get; set; }
 
+        //INSERT INTO table_name (column1, column2, column3, ...) VALUES(value1, value2, value3, ...);
         public static int Insert(SQLDBConnection myDB, string table_name, string cols, string values)
         {
             int result = 0;
@@ -141,8 +142,7 @@ namespace SetRooms.Class
             {
                 Console.WriteLine("ERROR Trying to connect");
             }
-
-
+            myDB.Close();
             return dt;
         }
 
