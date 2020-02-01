@@ -1,13 +1,7 @@
 ﻿using SetRooms.Class;
-using System;
-using System.Data.SqlClient;
-
-using FastMember;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Data;
 using SetRooms.Class.Helpers;
+using System;
+using System.Data;
 
 namespace SetRooms
 {
@@ -21,17 +15,13 @@ namespace SetRooms
             SQLDBConnection myDB = new SQLDBConnection(myConfigFile.GetKeyValue("Data Source"), myConfigFile.GetKeyValue("Catalog"),
                                      Convert.ToBoolean(myConfigFile.GetKeyValue("Integrated Security")));
             DataTable dTable;
+            DateTime[] checkIN_OUT = new DateTime[2];
             bool exit = false;
 
             //MENU
             int menuOp;
             //FIN MENU
-            
-            //Helper.LoadRooms(myDB);
-            //HpClients.InsertClient(myDB, strDNI);
-            //exit = Helper.ClientExist(myDB, "111111111");
-
-            //HpClients.UpdateClient(myDB, strDNI);
+            exit = HpVarious.IsDate("3/9/2008");
 
             do
             {
@@ -87,6 +77,22 @@ namespace SetRooms
                         {
                             case 1:
                                 //Reservar
+                                strDNI = Menu.GetDNIFromUser("AREA RESERVACIONES -> RESERVAR HABITACION\n");
+                                if (HpClients.ClientExist(myDB, strDNI))
+                                {
+                                    Menu.PrintBookingQuestions(checkIN_OUT);
+                                    HpBooks.ShowNotBookedRoom(myDB, checkIN_OUT);//IMPRIME habitaciones disponibles
+                                    Console.Write("\nINDIQUE NUMERO DE HABITACIÓN A RESERVAR (Sólo el número): ");
+                                    
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("NO ES UN CLIENTE VALIDO, NO PUEDE HACER LA RESERVA");
+                                    Console.ResetColor();
+                                    Console.ReadLine();
+                                    Menu.PrintBookingMenu(); //TODO: imprime nuevamente el menu pero hay que trabajarlo porque cuando imprime nuevamente no funciona bien
+                                }
                                 break;
                             case 2:
                                 //Modificar Reservacion - ir a otro menu

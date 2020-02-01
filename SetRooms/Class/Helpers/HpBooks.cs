@@ -8,14 +8,36 @@ namespace SetRooms.Class.Helpers
     class HpBooks
     {
         //Carga Cliente en la DB
-        public static bool InsertBook(SQLDBConnection myDB, string strDNI)
+        public static bool InsertBook(SQLDBConnection myDB, string strDNI, int intRoomNumber)
         {
-            int result = 1; //Para los resultados de las consultas RUDI
+            int result; //Para los resultados de las consultas RUDI
+            string strClientID = null;
+            int intRoomID = 0;
+
             DataTable dTable;
             Console.WriteLine($"REGISTRANDO CLIENTE BAJO EL DNI: {strDNI}");
             string strFirstName, strLastName;
+            
+            // Con el DNI debo obtener el ClientID
+            if (HpClients.ClientExist(myDB,strDNI))
+            {
+                dTable = RUDI.Read(myDB, "Clients", "ClientID", $"LIKE DNI = '{strDNI}'");
+                strClientID = dTable.Rows[0]["ClientID"].ToString();
+            }
 
-            if (strDNI != "0" && strDNI.Length == 9 && !BookExist(myDB, strDNI))
+            //Con el RoomNumber debo obtener el RoomID
+            if (HpRooms.RoomExist(myDB, intRoomNumber))
+            {
+                dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber={intRoomNumber}");
+                intRoomID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
+            }
+
+            //Debo verificar con los chequines si la hab esta disponible para reserva
+            //Obtengo habitaciones disponibles segun fechas
+            dTable = RUDI.Read(myDB, "Bookings", "*", $"RoomID={intRoomID}");
+
+
+            if (strDNI != "0" && strDNI.Length == 9 && !BookExist(myDB, 1)) //TODO: Fix the number of BookExist
             {
                 Console.Write("Name: ");
                 strFirstName = Console.ReadLine();
@@ -56,7 +78,7 @@ namespace SetRooms.Class.Helpers
             return false;
         }
 
-        public static bool IsTheRoomAvailable(SQLDBConnection myDB, string strDNI)
+        public static bool IsTheRoomAvailable(SQLDBConnection myDB, string strDNI) //TODO: Revisar aqui, hay que hacer este metodo
         {
             DataTable dTable;
             if (strDNI.Length == 9)
@@ -71,5 +93,43 @@ namespace SetRooms.Class.Helpers
             }
             return false;
         }
+
+        public static bool BookExist(SQLDBConnection myDB, int intBookingID)
+        {
+            DataTable dTable;
+            if (intBookingID > 0)
+            {
+                dTable = RUDI.Read(myDB, "Bookings", "BookingID", $"BookinID={intBookingID}");  //SELECT BookingID FROM Bookings WHERE BookinID = intBookingID
+                if (dTable != null && dTable.Rows.Count > 0)
+                    return true;
+            }
+            return false;
+        }
+
+        // Muestra las habitaciones disponibles según Fecha Indicada en el array checkIN_OUT
+        public static void ShowNotBookedRoom(SQLDBConnection myDB, DateTime[] checkIN_OUT)
+        {
+            DataTable dTable;
+            Console.WriteLine($"\nHABITACIONES DISPONIBLES PARA LA FECHA INDICADA");
+            string[] availableRoom = new string[] { "HAB-0", "HAB-" };
+            dTable = RUDI.ReadFromSP(myDB, "AvailableRooms", checkIN_OUT); //AvailableRooms nombre de Proceso Almacenado
+
+            if (dTable != null && dTable.Rows.Count > 0)
+            {
+                foreach (DataRow dataRow in dTable.Rows)
+                {
+                    foreach (var item in dataRow.ItemArray)
+                    {
+                        if (Convert.ToInt32(item) < 10)
+                            Console.Write($"{availableRoom[0]}{item}");
+                        else
+                            Console.Write($"{availableRoom[1]}{item}");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.ReadLine();
+        }
+
     }
 }

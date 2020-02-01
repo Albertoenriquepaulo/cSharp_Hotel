@@ -87,5 +87,29 @@ namespace SetRooms.Class
             return Convert.ToInt32(Console.ReadLine());
         }
 
+        // Carga un arreglo de dos posiciones:
+        // [0] -> Fecha CheckIn
+        // [1] -> Fecha CheckOut
+        // No devuelve nada ya que los arreglos se pasan automáticamente por referencia
+        public static void PrintBookingQuestions(DateTime[] Dates)
+        {
+            bool condition = false;
+            do
+            {
+                Console.Write("FECHA INICIAL (e.g. dd/mm/yyyy): ");
+                Dates[0] = DateTime.Parse(Console.ReadLine());
+                Console.Write("FECHA FINAL (e.g. dd/mm/yyyy):  ");
+                Dates[1] = DateTime.Parse(Console.ReadLine());
+                condition = (DateTime.Compare(Dates[0], Dates[1]) < 0 && DateTime.Compare(Dates[0], DateTime.Today) > 0 && DateTime.Compare(Dates[1], DateTime.Today) > 0);
+                if (!condition)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("ERROR -> Introduzca nuevamente las fechas. \nFECHA INICIAL no puede ser mayor que FECHA FINAL.\nFECHA FINAL no puede ser menor que FECHA INICIAL.\nNinguna de las fechas debe ser mayor que la FECHA ACTUAL.\n");
+                    Console.ResetColor();
+                }
+
+            } while ( !condition );
+        }
+
     }
 }

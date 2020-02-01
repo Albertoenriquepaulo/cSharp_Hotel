@@ -146,7 +146,37 @@ namespace SetRooms.Class
             return dt;
         }
 
+        //EXECUTE AvailableRooms '01/09/2020', '02/16/2020';
+        public static DataTable ReadFromSP(SQLDBConnection myDB, string sp, DateTime[] checkIN_OUT)
+        {
+            string query = null;
+            SqlDataReader readerCollection = null;
+            DataTable dt = new DataTable();
+            
+            query = $"EXECUTE {sp} '{checkIN_OUT[0].ToString("MM/dd/yyyy")}', '{checkIN_OUT[1].ToString("MM/dd/yyyy")}'";
 
+            if (myDB.GetConnection())
+            {
+                myDB.CreateCMD();
+                myDB.SetSQLQuery(query);
+
+                try
+                {
+                    readerCollection = myDB.CMD.ExecuteReader();
+                    dt.Load(readerCollection);
+                }
+                catch (SqlException MySqlError)
+                {
+                    Console.WriteLine(MySqlError.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("ERROR Trying to connect");
+            }
+            myDB.Close();
+            return dt;
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -85,12 +85,12 @@ namespace SetRooms.Class.Helpers
             Console.ReadLine();
         }
 
-        public static bool RoomExist(SQLDBConnection myDB, int intRoomID)
+        public static bool RoomExist(SQLDBConnection myDB, int intRoomNumber)
         {
             DataTable dTable;
-            if (intRoomID > 0)
+            if (intRoomNumber > 0)
             {
-                dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomID={intRoomID}");  //SELECT RoomID FROM Rooms WHERE RoomID = intRoomID
+                dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber={intRoomNumber}");  //SELECT RoomID FROM Rooms WHERE RoomID = intRoomID
                 if (dTable != null && dTable.Rows.Count > 0)
                     return true;
             }
