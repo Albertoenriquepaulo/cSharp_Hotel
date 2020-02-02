@@ -8,74 +8,42 @@ namespace SetRooms.Class.Helpers
     class HpBooks
     {
         //Carga Cliente en la DB
-        public static bool InsertBook(SQLDBConnection myDB, string strDNI, int intRoomNumber)
+        public static bool InsertBook(SQLDBConnection myDB, string strDNI, int intRoomNumber, DateTime[] checkIN_OUT)
         {
             int result; //Para los resultados de las consultas RUDI
-            string strClientID = null;
+            int intClientID = 0;
             int intRoomID = 0;
 
             DataTable dTable;
-            Console.WriteLine($"REGISTRANDO CLIENTE BAJO EL DNI: {strDNI}");
+            Console.WriteLine($"REGISTRANDO RESERVACION DE HAB-{intRoomNumber}");
             string strFirstName, strLastName;
             
             // Con el DNI debo obtener el ClientID
             if (HpClients.ClientExist(myDB,strDNI))
             {
-                dTable = RUDI.Read(myDB, "Clients", "ClientID", $"LIKE DNI = '{strDNI}'");
-                strClientID = dTable.Rows[0]["ClientID"].ToString();
+                dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");
+                intClientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
             }
 
             //Con el RoomNumber debo obtener el RoomID
             if (HpRooms.RoomExist(myDB, intRoomNumber))
             {
                 dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber={intRoomNumber}");
-                intRoomID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
+                intRoomID = Convert.ToInt32(dTable.Rows[0]["RoomID"]);
             }
 
             //Debo verificar con los chequines si la hab esta disponible para reserva
+            //El comment de arriba es innecesario ya que si llamo a esta función ya validé que la hab está disponible
             //Obtengo habitaciones disponibles segun fechas
-            dTable = RUDI.Read(myDB, "Bookings", "*", $"RoomID={intRoomID}");
-
-
-            if (strDNI != "0" && strDNI.Length == 9 && !BookExist(myDB, 1)) //TODO: Fix the number of BookExist
+            result = RUDI.Insert(myDB, "Bookings", "ClientID, RoomID, CheckIn, CheckOut", $"{intClientID}, {intRoomID}, '{checkIN_OUT[0].ToString("MM/dd/yyyy")}', '{checkIN_OUT[1].ToString("MM/dd/yyyy")}'");
+            if (result > 0)
             {
-                Console.Write("Name: ");
-                strFirstName = Console.ReadLine();
-                Console.Write("Last Name: ");
-                strLastName = Console.ReadLine();
-                result = RUDI.Insert(myDB, "Clients", "Name, LastName, DNI", $"'{strFirstName}', '{strLastName}', '{strDNI.ToUpper()}'");
-                if (result == 1)
-                {
-                    int clientID;
-                    dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
-                    clientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
-                    Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido creado con exito bajo el ID#: {clientID}");
-                    return true;
-                }
-                return false;
-            }
-            else
-            {
-                if (strDNI == "0")
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)");
-                    Console.ResetColor();
-                }
-                else if (strDNI.Length != 9)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI");
-                    Console.ResetColor();
-                }
+                Console.WriteLine("LA RESERVA FUE AÑADIDA CON ÉXITO.");
+                return true;
             }
             return false;
+
+
         }
 
         public static bool IsTheRoomAvailable(SQLDBConnection myDB, string strDNI) //TODO: Revisar aqui, hay que hacer este metodo
@@ -112,23 +80,29 @@ namespace SetRooms.Class.Helpers
             DataTable dTable;
             Console.WriteLine($"\nHABITACIONES DISPONIBLES PARA LA FECHA INDICADA");
             string[] availableRoom = new string[] { "HAB-0", "HAB-" };
-            dTable = RUDI.ReadFromSP(myDB, "AvailableRooms", checkIN_OUT); //AvailableRooms nombre de Proceso Almacenado
+            dTable = RUDI.ReadFromSP(myDB, "AvailableRoomsNumber", checkIN_OUT); //AvailableRooms nombre de Proceso Almacenado
 
             if (dTable != null && dTable.Rows.Count > 0)
             {
-                foreach (DataRow dataRow in dTable.Rows)
+                //foreach (DataRow dataRow in dTable.Rows)
+                //{
+
+                //    foreach (var item in dataRow.ItemArray)
+                //    {
+                //        if (Convert.ToInt32(item) < 10)
+                //            Console.Write($"{availableRoom[0]}{item}");
+                //        else
+                //            Console.Write($"{availableRoom[1]}{item}");
+                //    }
+
+                //    Console.WriteLine();
+                //}
+                foreach (DataRow row in dTable.Rows)
                 {
-                    foreach (var item in dataRow.ItemArray)
-                    {
-                        if (Convert.ToInt32(item) < 10)
-                            Console.Write($"{availableRoom[0]}{item}");
-                        else
-                            Console.Write($"{availableRoom[1]}{item}");
-                    }
-                    Console.WriteLine();
+                    // ... Write value of first field as integer.
+                    Console.WriteLine($"{availableRoom[1]}{row.Field<int>(1)}");
                 }
             }
-            Console.ReadLine();
         }
 
     }

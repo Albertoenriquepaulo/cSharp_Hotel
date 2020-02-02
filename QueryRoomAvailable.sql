@@ -37,9 +37,95 @@ GO
 --	ORDER BY R.RoomID;
 --GO 
 
-EXECUTE AvailableRooms '01/09/2020', '02/16/2020';
+--CREATE PROCEDURE AvailableRoomsNumber
+--    @fecha1 datetime,   
+--    @fecha2 datetime
+--AS   
 
-SELECT * FROM Bookings
+--    SET NOCOUNT ON;  
+--    SELECT R.RoomID, R.RoomNumber AS 'AvailableRoomNumber'
+--	FROM Rooms R
+--	WHERE NOT EXISTS (
+--         SELECT NULL
+--           FROM Bookings B
+--          WHERE B.RoomID = R.RoomID
+--            AND @fecha1 <= B.CheckIn
+--            AND @fecha2 <= B.CheckOut)
+--	ORDER BY R.RoomID;
+--GO 
+
+--EXECUTE AvailableRooms '01/09/2020', '02/16/2020';
+
+--SELECT * FROM Bookings
+--SELECT * FROM Rooms
+
+--EXECUTE AvailableRooms '02/05/2019', '02/18/2019'
+
+--SELECT ClientID FROM Clients WHERE DNI LIKE 'Y6534922S'
+
+--INSERT INTO Bookings (ClientID, RoomID, CheckIn, CheckOut) VALUES (1, 0, '02/15/2020', '02/25/2020')
+
+--CREATE PROCEDURE AvailableRoomsNumberReload
+--    @fecha1 datetime,   
+--    @fecha2 datetime
+--AS   
+
+--    SET NOCOUNT ON;  
+--    SELECT R.RoomID, R.RoomNumber AS 'AvailableRoomNumber'
+--	FROM Rooms R
+--	WHERE NOT EXISTS (
+--         SELECT NULL
+--           FROM Bookings B
+--          WHERE B.RoomID = R.RoomID
+--            AND @fecha1 <= B.CheckIn
+--            AND @fecha2 <= B.CheckOut)
+--	ORDER BY R.RoomID;
+--GO
+
+
+--SELECT * FROM Bookings
+
+--EXECUTE AvailableRoomsNumber '02/05/2020', '02/10/2020';
+
+--CREATE PROCEDURE AvailableRoomsNumberReload
+--    @fecha2 datetime
+--AS   
+
+--    SET NOCOUNT ON;  
+--    SELECT R.RoomID, R.RoomNumber AS 'AvailableRoomNumber'
+--	FROM Rooms R
+--	WHERE NOT EXISTS (
+--         SELECT NULL
+--           FROM Bookings B
+--          WHERE B.RoomID = R.RoomID
+--            AND @fecha2 <= B.CheckIn)
+--	ORDER BY R.RoomID;
+--GO
+
+--SELECT R.RoomID, R.RoomNumber AS 'AvailableRoomNumber'
+--	FROM Rooms R
+--	WHERE NOT EXISTS (
+--         SELECT NULL
+--           FROM Bookings B
+--          WHERE B.RoomID = R.RoomID
+--            AND ('03/18/2020' < B.CheckIn OR '03/05/2020' > B.CheckOut)
+--			)
+--	ORDER BY R.RoomID;
+
 SELECT * FROM Rooms
 
-EXECUTE AvailableRooms '02/05/2019', '02/18/2019'
+--CREATE PROCEDURE AvailableRoomsNumber
+--    @fecha1 datetime,   
+--    @fecha2 datetime
+--AS 
+--SELECT R.RoomID, R.RoomNumber AS 'AvailableRoomNumber'
+--	FROM Rooms R
+--	WHERE NOT EXISTS (
+--         SELECT NULL
+--           FROM Bookings B
+--          WHERE B.RoomID = R.RoomID
+--            AND (@fecha2 > B.CheckIn) and (@fecha1 < B.CheckOut)
+--			)
+--	ORDER BY R.RoomID;
+--GO
+--SELECT * FROM Bookings

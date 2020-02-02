@@ -88,7 +88,7 @@ namespace SetRooms.Class.Helpers
         public static bool RoomExist(SQLDBConnection myDB, int intRoomNumber)
         {
             DataTable dTable;
-            if (intRoomNumber > 0)
+            if (intRoomNumber >= 0)
             {
                 dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber={intRoomNumber}");  //SELECT RoomID FROM Rooms WHERE RoomID = intRoomID
                 if (dTable != null && dTable.Rows.Count > 0)

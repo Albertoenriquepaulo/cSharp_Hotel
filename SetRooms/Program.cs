@@ -17,6 +17,7 @@ namespace SetRooms
             DataTable dTable;
             DateTime[] checkIN_OUT = new DateTime[2];
             bool exit = false;
+            int intRoomNumber;
 
             //MENU
             int menuOp;
@@ -82,8 +83,9 @@ namespace SetRooms
                                 {
                                     Menu.PrintBookingQuestions(checkIN_OUT);
                                     HpBooks.ShowNotBookedRoom(myDB, checkIN_OUT);//IMPRIME habitaciones disponibles
-                                    Console.Write("\nINDIQUE NUMERO DE HABITACIÓN A RESERVAR (Sólo el número): ");
-                                    
+                                    Console.Write("INDIQUE NUMERO DE HABITACIÓN A RESERVAR (Sólo el número): ");
+                                    intRoomNumber = Convert.ToInt32(Console.ReadLine());
+                                    HpBooks.InsertBook(myDB, strDNI, intRoomNumber, checkIN_OUT);
                                 }
                                 else
                                 {
