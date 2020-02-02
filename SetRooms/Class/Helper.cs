@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace SetRooms.Class
 {
@@ -10,7 +8,7 @@ namespace SetRooms.Class
         public static void LoadRooms(SQLDBConnection myDB)
         {
             int result; //Para los resultados de las consultas RUDI
-            bool exit = true;
+            bool exit;
             DataTable dTable;
             Console.WriteLine("Section Para Cargar Las Habitaciones (RoomID -> Automatic, Disponibilidad -> 0/1)");
             do
@@ -44,8 +42,8 @@ namespace SetRooms.Class
         //Carga Clienets en la DB
         public static void LoadClients(SQLDBConnection myDB)
         {
-            int result = 1; //Para los resultados de las consultas RUDI
-            bool exit = true;
+            int result; //Para los resultados de las consultas RUDI
+            bool exit;
             DataTable dTable;
             Console.WriteLine("Section Para Registrar Clientes");
             do

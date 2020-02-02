@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace SetRooms.Class.Helpers
 {
@@ -10,7 +8,7 @@ namespace SetRooms.Class.Helpers
         //Carga Cliente en la DB
         public static bool InsertClient(SQLDBConnection myDB, string strDNI)
         {
-            int result = 1; //Para los resultados de las consultas RUDI
+            int result; //Para los resultados de las consultas RUDI
             DataTable dTable;
             Console.WriteLine($"REGISTRANDO CLIENTE BAJO EL DNI: {strDNI}");
             string strFirstName, strLastName;

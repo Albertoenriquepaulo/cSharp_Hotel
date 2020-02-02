@@ -1,20 +1,21 @@
 ﻿using SetRooms.Class;
 using SetRooms.Class.Helpers;
 using System;
-using System.Data;
+//using System.Data;
 
 namespace SetRooms
 {
     class Program
     {
+        public static SQLDBConnection myDB;
         static void Main(string[] args)
         {
-            int result; //Para los resultados de las consultas RUDI
+            //int result; //Para los resultados de las consultas RUDI
             string strDNI;
             ConfigFile myConfigFile = new ConfigFile();
-            SQLDBConnection myDB = new SQLDBConnection(myConfigFile.GetKeyValue("Data Source"), myConfigFile.GetKeyValue("Catalog"),
+            myDB = new SQLDBConnection(myConfigFile.GetKeyValue("Data Source"), myConfigFile.GetKeyValue("Catalog"),
                                      Convert.ToBoolean(myConfigFile.GetKeyValue("Integrated Security")));
-            DataTable dTable;
+            //DataTable dTable;
             DateTime[] checkIN_OUT = new DateTime[2];
             bool exit = false;
             int intRoomNumber;
@@ -22,7 +23,7 @@ namespace SetRooms
             //MENU
             int menuOp;
             //FIN MENU
-            exit = HpVarious.IsDate("3/9/2008");
+            //exit = HpVarious.IsDate("3/9/2008");
 
             do
             {

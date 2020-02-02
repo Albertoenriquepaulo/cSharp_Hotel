@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
-
-using System.ComponentModel;
+/*using System.Text;
+using System.ComponentModel;*/
 
 using FastMember;
 using System.Linq;
@@ -110,7 +109,7 @@ namespace SetRooms.Class
         // http://www.codedigest.com/CodeDigest/172-How-to-Convert-SqlDataReader-object-to-DataTable-in-C---ADO-Net-.aspx
         public static DataTable Read(SQLDBConnection myDB, string table_name, string cols = "*", string condition = null)
         {
-            string query = null;
+            string query;
             SqlDataReader readerCollection = null;
             DataTable dt = new DataTable();
 
@@ -149,7 +148,7 @@ namespace SetRooms.Class
         //EXECUTE AvailableRooms '01/09/2020', '02/16/2020';
         public static DataTable ReadFromSP(SQLDBConnection myDB, string sp, DateTime[] checkIN_OUT)
         {
-            string query = null;
+            string query;
             SqlDataReader readerCollection = null;
             DataTable dt = new DataTable();
             
@@ -185,7 +184,7 @@ namespace SetRooms.Class
         //https://stackoverflow.com/questions/41040189/fastest-way-to-map-result-of-sqldatareader-to-object
         public static async Task<T> Read2<T> (SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
         {
-            string query = null;
+            string query;
             SqlDataReader readerCollection = null;
 
             
@@ -260,7 +259,7 @@ namespace SetRooms.Class
         // https://www.experts-exchange.com/questions/29106915/C-Convert-SQLDataReader-to-List.html
         public static List<T> Read1<T>(SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
         {
-            string query = null;
+            string query;
             SqlDataReader readerCollection = null;
 
 
@@ -301,7 +300,6 @@ namespace SetRooms.Class
                     Type type = t.GetType();
                     PropertyInfo prop = type.GetProperty(readerCollection.GetName(inc));
                     //https://gist.github.com/mrkodssldrf/7023997
-                  // prop.SetValue(t, Convert.ChangeType(readerCollection.GetValue(inc), prop.PropertyType), null);//prop.SetValue(t, readerCollection.GetValue(inc), null);
                 }
 
                 res.Add(t);

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace SetRooms.Class.Helpers
 {
@@ -16,7 +14,6 @@ namespace SetRooms.Class.Helpers
 
             DataTable dTable;
             Console.WriteLine($"REGISTRANDO RESERVACION DE HAB-{intRoomNumber}");
-            string strFirstName, strLastName;
             
             // Con el DNI debo obtener el ClientID
             if (HpClients.ClientExist(myDB,strDNI))
@@ -84,22 +81,9 @@ namespace SetRooms.Class.Helpers
 
             if (dTable != null && dTable.Rows.Count > 0)
             {
-                //foreach (DataRow dataRow in dTable.Rows)
-                //{
-
-                //    foreach (var item in dataRow.ItemArray)
-                //    {
-                //        if (Convert.ToInt32(item) < 10)
-                //            Console.Write($"{availableRoom[0]}{item}");
-                //        else
-                //            Console.Write($"{availableRoom[1]}{item}");
-                //    }
-
-                //    Console.WriteLine();
-                //}
                 foreach (DataRow row in dTable.Rows)
                 {
-                    // ... Write value of first field as integer.
+                    // ... Escribir valor del primer Field como entero. En la pos(0) tengo los RoomID
                     Console.WriteLine($"{availableRoom[1]}{row.Field<int>(1)}");
                 }
             }

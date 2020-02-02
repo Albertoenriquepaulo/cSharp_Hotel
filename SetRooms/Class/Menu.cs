@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SetRooms.Class
 {
@@ -32,7 +30,7 @@ namespace SetRooms.Class
 
         public static string GetDNIFromUser(string areaMenu)
         {
-            string strDNI = null;
+            string strDNI;
             Console.Clear();
             do
             {
@@ -93,7 +91,7 @@ namespace SetRooms.Class
         // No devuelve nada ya que los arreglos se pasan automáticamente por referencia
         public static void PrintBookingQuestions(DateTime[] Dates)
         {
-            bool condition = false;
+            bool condition;
             do
             {
                 Console.Write("FECHA INICIAL (e.g. dd/mm/yyyy): ");

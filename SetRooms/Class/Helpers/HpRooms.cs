@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
+
 
 namespace SetRooms.Class.Helpers
 {
@@ -10,10 +9,9 @@ namespace SetRooms.Class.Helpers
         public static void InsertRoom(SQLDBConnection myDB)
         {
             int result; //Para los resultados de las consultas RUDI
-            bool exit = true;
+            bool exit;
             DataTable dTable;
             Console.WriteLine($"REGISTRANDO HABITACION");
-            //Console.WriteLine("Section Para Cargar Las Habitaciones (RoomID -> Automatic, Disponibilidad -> 0/1)");
             do
             {
                 string strAvailable, roomNumber;
@@ -23,7 +21,6 @@ namespace SetRooms.Class.Helpers
                 strAvailable = Console.ReadLine();
                 if (strAvailable == "0" || strAvailable == "1")
                 {
-                    //result = RUDI.Insert(myDB, "Rooms", "RoomID, Available", $"{roomID},{Convert.ToString( (Convert.ToInt32(strAvailable) == 1) ? 0 : 1)}");
                     result = RUDI.Insert(myDB, "Rooms", "RoomNumber, Available", $"{roomNumber},{strAvailable}");
                     if (result == 1)
                     {
