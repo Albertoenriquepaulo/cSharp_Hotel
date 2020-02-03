@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 
 namespace SetRooms.Class
 {
@@ -75,10 +76,9 @@ namespace SetRooms.Class
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI");
+                        Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI", Color.Red);
+                        Menu.WriteContinue();
                         exit = false;
-                        Console.ResetColor();
                     }
                 }
             } while (!exit);

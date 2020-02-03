@@ -27,44 +27,50 @@ namespace SetRooms
             //FIN MENU
             //exit = HpVarious.IsDate("3/9/2008");
             Console.Title = "BBK Hotel Reservation System, By Alberto Paulo";
+            int Heigth = Console.WindowHeight; Console.WindowHeight = 40;
+            int Weigth = Console.WindowWidth;
+
             do
             {
                 menuOp = Menu.PrintMainMenu();
                 switch (menuOp)
                 {
-                    case 1:
-                        menuOp = Menu.PrintClientMenu();
-                        switch (menuOp)
+                    case (int)Menu.MainOp.clients:
+                        do
                         {
-                            case 1:
-                                HpClients.InsertClient(myDB, Menu.GetDNIFromUser("AREA CLIENTES -> REGISTRAR CLIENTE (NUEVO CLIENTE)\n"));
-                                break;
-                            case 2:
-                                HpClients.UpdateClient(myDB, Menu.GetDNIFromUser("AREA CLIENTES -> ACTUALIZAR CLIENTE\n"));
-                                break;
-                            case 3:
-                                HpClients.ShowClientsInTable(myDB);
-                                break;
-                            //case 4:
-                            //    //Volver
-                            //    //menuOp = Menu.PrintMainMenu();
-                            //    break;
-                            default:
-                                Console.WriteLine("Other");
-                                break;
-                        }
+                            menuOp = Menu.PrintClientMenu();
+                            switch (menuOp)
+                            {
+                                case (int)Menu.ClientOp.add:
+                                    HpClients.InsertClient(myDB, Menu.GetDNIFromUser("AREA CLIENTES -> REGISTRAR CLIENTE (NUEVO CLIENTE)\n"));
+                                    break;
+                                case (int)Menu.ClientOp.update:
+                                    HpClients.UpdateClient(myDB, Menu.GetDNIFromUser("AREA CLIENTES -> ACTUALIZAR CLIENTE\n"));
+                                    break;
+                                case (int)Menu.ClientOp.query:
+                                    HpClients.ShowClientsInTable(myDB);
+                                    break;
+                                //case 4:
+                                //    //Volver
+                                //    //menuOp = Menu.PrintMainMenu();
+                                //    break;
+                                default:
+                                    Console.WriteLine("Other");
+                                    break;
+                            }
+                        } while (menuOp > 0 && menuOp < 4);
                         break;
-                    case 2:
+                    case (int)Menu.MainOp.rooms:
                         do
                         {
                             menuOp = Menu.PrintRoomMenu();
                             switch (menuOp)
                             {
-                                case 1:
+                                case (int)Menu.RoomOp.add:
                                     //Insert Room
                                     HpRooms.InsertRoom(myDB);
                                     break;
-                                case 2:
+                                case (int)Menu.RoomOp.query:
                                     //Show Rooms -- TODO: Preguntar DNI y dejarlo ver las habitaciones solo si esta registrado
                                     HpRooms.ShowRoomsInTable(myDB, 2);
 
@@ -79,11 +85,11 @@ namespace SetRooms
                             }
                         } while (menuOp > 0 && menuOp < 3);
                         break;
-                    case 3:
+                    case (int)Menu.MainOp.books:
                         menuOp = Menu.PrintBookingMenu();
                         switch (menuOp)
                         {
-                            case 1:
+                            case (int)Menu.BookOp.add:
                                 //Reservar
                                 strDNI = Menu.GetDNIFromUser("AREA RESERVACIONES -> RESERVAR HABITACION\n");
                                 if (HpClients.ClientExist(myDB, strDNI))
@@ -101,26 +107,26 @@ namespace SetRooms
                                     // Menu.PrintBookingMenu(); //TODO: imprime nuevamente el menu pero hay que trabajarlo porque cuando imprime nuevamente no funciona bien
                                 }
                                 break;
-                            case 2:
+                            case (int)Menu.BookOp.update:
                                 //Modificar Reservacion - ir a otro menu
                                 do
                                 {
                                     menuOp = Menu.PrintBookingLowLevelMenu();
                                     switch (menuOp)
                                     {
-                                        case 1:
+                                        case (int)Menu.BookOpUpdate.upCheckIN:
                                             //Modificar CheckIn
                                             Menu.WriteConstruction();
                                             break;
-                                        case 2:
+                                        case (int)Menu.BookOpUpdate.upCheckOUT:
                                             //Modificar CheckOut
                                             Menu.WriteConstruction();
                                             break;
-                                        case 3:
+                                        case (int)Menu.BookOpUpdate.upBoth:
                                             //Modificar Ambas
                                             Menu.WriteConstruction();
                                             break;
-                                        case 4:
+                                        case (int)Menu.BookOpUpdate.back:
                                             //Volver - Bajar un nivel
                                             menuOp = Menu.PrintBookingMenu();
                                             break;
@@ -130,7 +136,7 @@ namespace SetRooms
                                     }
                                 } while (menuOp > 0 && menuOp < 4);
                                 break;
-                            case 3:
+                            case (int)Menu.BookOp.delete:
                                 //Eliminar Reservacion
                                 Menu.WriteConstruction();
                                 break;
@@ -143,27 +149,15 @@ namespace SetRooms
                                 break;
                         }
                         break;
-                    case 4:
+                    case (int)Menu.MainOp.exit:
                         //Salir
+                        Console.WriteLine("\n\n\tGood Bye Dude...\n\n", Color.CadetBlue);
                         exit = true;
                         break;
                     default:
                         Console.WriteLine("Other");
                         break;
                 }
-
-                //Console.Write("DNI: ");
-                //strDNI = Console.ReadLine().ToUpper();
-                //if (strDNI != "0")
-                //{
-                //    //HpClients.InsertClient(myDB, strDNI);
-                //    HpClients.UpdateClient(myDB, strDNI);
-                //    exit = false;
-                //}
-                //else
-                //{
-                //    exit = true;
-                //}
 
             } while (!exit);
         }

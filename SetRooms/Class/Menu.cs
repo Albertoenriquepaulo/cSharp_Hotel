@@ -9,6 +9,45 @@ namespace SetRooms.Class
     class Menu
     {
         const string APP_NAME = "BBK Hotel System";
+        public enum MainOp
+        {
+            clients = 1,
+            rooms = 2,
+            books = 3,
+            exit = 4
+        }
+        public enum ClientOp
+        {
+            add = 1,
+            update = 2,
+            query = 3,
+            back = 4
+        }
+
+        public enum RoomOp
+        {
+            add = 1,
+            query = 2,
+            back = 3
+        }
+
+        public enum BookOp
+        {
+            add = 1,
+            update = 2,
+            delete = 3,
+            back = 4
+        }
+
+        public enum BookOpUpdate
+        {
+            upCheckIN = 1,
+            upCheckOUT = 2,
+            upBoth = 3,
+            back = 4
+        }
+
+
         public static int PrintMainMenu()
         {
             ColorAlternatorFactory alternatorFactory = new ColorAlternatorFactory();
@@ -128,9 +167,7 @@ namespace SetRooms.Class
                 condition = (DateTime.Compare(Dates[0], Dates[1]) < 0 && DateTime.Compare(Dates[0], DateTime.Today) > 0 && DateTime.Compare(Dates[1], DateTime.Today) > 0);
                 if (!condition)
                 {
-                    Console.ForegroundColor = Color.Red;
                     Console.WriteLine("ERROR -> Introduzca nuevamente las fechas. \nFECHA INICIAL no puede ser mayor que FECHA FINAL.\nFECHA FINAL no puede ser menor que FECHA INICIAL.\nNinguna de las fechas debe ser mayor que la FECHA ACTUAL.\n", Color.Red);
-                    Console.ResetColor();
                 }
 
             } while (!condition);

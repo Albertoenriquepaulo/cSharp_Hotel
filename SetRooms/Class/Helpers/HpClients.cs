@@ -41,8 +41,10 @@ namespace SetRooms.Class.Helpers
                     Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)", Color.Red);
                 else if (strDNI.Length != 9)
                     Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres", Color.Red);
-                else
+                else { 
                     Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI", Color.Red);
+                    Menu.WriteContinue();
+                }
             }
             return false;
         }
@@ -141,5 +143,8 @@ namespace SetRooms.Class.Helpers
             }
             return false;
         }
+
+
+
     }
 }

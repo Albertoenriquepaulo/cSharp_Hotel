@@ -3,6 +3,7 @@ using System.Drawing;
 using Console = Colorful.Console;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
 
 namespace SetRooms.Class.Helpers
 {
@@ -28,7 +29,22 @@ namespace SetRooms.Class.Helpers
             int ID = 255;
             Console.WriteAscii(strToPrint, Color.FromArgb(102, 255, 255));
         }
+
+        // Convierte un DataTable a un Objeto Genérico y lo devuelve
+        public static Object ConvertToObject(DataTable dTable)
+        {
+
+            var myGenericObj = dTable.AsEnumerable().Select(x =>
+            new
+            {
+                ClientID = x.Field<int>("ClientID"),
+                DNI = x.Field<string>("DNI"),
+                Name = x.Field<string>("Name"),
+                LastName = x.Field<string>("LastName"),
+
+            });
+
+            return myGenericObj;
+        }
     }
-
-
 }
