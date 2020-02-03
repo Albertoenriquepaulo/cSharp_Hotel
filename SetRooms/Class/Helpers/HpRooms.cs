@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
-
+using ConsoleTables;
+using System.Drawing;
+using Console = Colorful.Console;
 
 namespace SetRooms.Class.Helpers
 {
@@ -27,7 +29,7 @@ namespace SetRooms.Class.Helpers
                         int roomID;
                         dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber = {roomNumber}");  //SELECT RoomID FROM Rooms WHERE RoomNumber = roomNumber
                         roomID = Convert.ToInt32(dTable.Rows[0]["RoomID"]);
-                        Console.WriteLine($"La Habitación {roomNumber} ha sido añadida con exito bajo el ID#: {roomID}");
+                        Console.WriteLine($"La Habitación {roomNumber} ha sido añadida con exito bajo el ID#: {roomID}", Color.Blue);
 
                     }
                     exit = false;
@@ -47,7 +49,7 @@ namespace SetRooms.Class.Helpers
         {
             DataTable dTable;
             string disponibles = "DISPONIBLES";
-            
+
             if (availability < 0 && availability > 2)
             {
                 availability = 2;
@@ -67,7 +69,7 @@ namespace SetRooms.Class.Helpers
                 dTable = RUDI.Read(myDB, "Rooms", "RoomNumber, Available", $"Available = {availability}"); //Mostrar las habitaciones disponibles o las no disponibles
             else
                 dTable = RUDI.Read(myDB, "Rooms"); // Mostrar todas las habitaciones
-            
+
             if (dTable != null && dTable.Rows.Count > 0)
             {
                 foreach (DataRow dataRow in dTable.Rows)
@@ -79,6 +81,53 @@ namespace SetRooms.Class.Helpers
                     Console.WriteLine();
                 }
             }
+            Console.ReadLine();
+        }
+
+        //Mostrar clientes de la DB
+        // availability = 0 = FALSE, muestra las habitaciones NO disponibles
+        // availability = 1 = TRUE, muestra las habitaciones SI disponibles
+        // availability = 2 , muestra todas las habitaciones, disponibles y no disponibles
+        public static void ShowRoomsInTable(SQLDBConnection myDB, int availability)
+        {
+            DataTable dTable;
+            string disponibles = "DISPONIBLES";
+            var table = new ConsoleTable("ID", "NUMERO HABITACIÓN", "DISPONIBLE");
+
+            if (availability < 0 && availability > 2)
+            {
+                availability = 2;
+            }
+            if (availability == 0)
+            {
+                disponibles = "NO DISPONIBLES";
+            }
+            else if (availability == 2)
+            {
+                disponibles = "Y SU ESTATUS";
+            }
+
+            Console.WriteLine($"MOSTRANDO TODAS LAS HABITACIONES {disponibles}");
+
+            if (availability <= 1)
+                dTable = RUDI.Read(myDB, "Rooms", "RoomID, RoomNumber, Available", $"Available = {availability}"); //Mostrar las habitaciones disponibles o las no disponibles
+            else
+                dTable = RUDI.Read(myDB, "Rooms", "RoomID, RoomNumber, Available"); // Mostrar todas las habitaciones
+
+            if (dTable != null && dTable.Rows.Count > 0)
+            {
+                foreach (DataRow dataRow in dTable.Rows)
+                {
+                    string[] strInfoToPrint = new string[3];
+                    int i = 0;
+                    foreach (var item in dataRow.ItemArray)
+                    {
+                        strInfoToPrint[i++] = item.ToString();
+                    }
+                    table.AddRow(strInfoToPrint);
+                }
+            }
+            table.Write();
             Console.ReadLine();
         }
 

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ConsoleTables;
+using System;
 using System.Data;
+using System.Drawing;
+using Console = Colorful.Console;
 
 namespace SetRooms.Class.Helpers
 {
@@ -14,9 +17,9 @@ namespace SetRooms.Class.Helpers
 
             DataTable dTable;
             Console.WriteLine($"REGISTRANDO RESERVACION DE HAB-{intRoomNumber}");
-            
+
             // Con el DNI debo obtener el ClientID
-            if (HpClients.ClientExist(myDB,strDNI))
+            if (HpClients.ClientExist(myDB, strDNI))
             {
                 dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");
                 intClientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
@@ -35,7 +38,7 @@ namespace SetRooms.Class.Helpers
             result = RUDI.Insert(myDB, "Bookings", "ClientID, RoomID, CheckIn, CheckOut", $"{intClientID}, {intRoomID}, '{checkIN_OUT[0].ToString("MM/dd/yyyy")}', '{checkIN_OUT[1].ToString("MM/dd/yyyy")}'");
             if (result > 0)
             {
-                Console.WriteLine("LA RESERVA FUE AÑADIDA CON ÉXITO.");
+                Console.WriteLine("LA RESERVA FUE AÑADIDA CON ÉXITO.", Color.Blue);
                 return true;
             }
             return false;
@@ -88,6 +91,23 @@ namespace SetRooms.Class.Helpers
                 }
             }
         }
+        public static void ShowNotBookedRoomInTable(SQLDBConnection myDB, DateTime[] checkIN_OUT)
+        {
+            DataTable dTable;
+            var table = new ConsoleTable("# HABITACIÓN");
+            Console.WriteLine($"\nHABITACIONES DISPONIBLES PARA LA FECHA INDICADA");
+            dTable = RUDI.ReadFromSP(myDB, "AvailableRoomsNumber", checkIN_OUT); //AvailableRooms nombre de Proceso Almacenado
+
+            if (dTable != null && dTable.Rows.Count > 0)
+            {
+                foreach (DataRow row in dTable.Rows)
+                {
+                    table.AddRow(row.Field<int>(1));
+                }
+            }
+            table.Write();
+        }
+
 
     }
 }

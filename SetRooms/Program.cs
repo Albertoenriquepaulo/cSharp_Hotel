@@ -1,6 +1,8 @@
 ﻿using SetRooms.Class;
 using SetRooms.Class.Helpers;
 using System;
+using System.Drawing;
+using Console = Colorful.Console;
 //using System.Data;
 
 namespace SetRooms
@@ -24,7 +26,7 @@ namespace SetRooms
             int menuOp;
             //FIN MENU
             //exit = HpVarious.IsDate("3/9/2008");
-
+            Console.Title = "BBK Hotel Reservation System, By Alberto Paulo";
             do
             {
                 menuOp = Menu.PrintMainMenu();
@@ -41,7 +43,7 @@ namespace SetRooms
                                 HpClients.UpdateClient(myDB, Menu.GetDNIFromUser("AREA CLIENTES -> ACTUALIZAR CLIENTE\n"));
                                 break;
                             case 3:
-                                HpClients.ShowClients(myDB);
+                                HpClients.ShowClientsInTable(myDB);
                                 break;
                             case 4:
                                 //Volver
@@ -62,7 +64,7 @@ namespace SetRooms
                                 break;
                             case 2:
                                 //Show Rooms -- TODO: Preguntar DNI y dejarlo ver las habitaciones solo si esta registrado
-                                HpRooms.ShowRooms(myDB, 1);
+                                HpRooms.ShowRoomsInTable(myDB, 2);
                                 break;
                             case 3:
                                 //Volver
@@ -83,16 +85,15 @@ namespace SetRooms
                                 if (HpClients.ClientExist(myDB, strDNI))
                                 {
                                     Menu.PrintBookingQuestions(checkIN_OUT);
-                                    HpBooks.ShowNotBookedRoom(myDB, checkIN_OUT);//IMPRIME habitaciones disponibles
-                                    Console.Write("INDIQUE NUMERO DE HABITACIÓN A RESERVAR (Sólo el número): ");
+                                    HpBooks.ShowNotBookedRoomInTable(myDB, checkIN_OUT);//IMPRIME habitaciones disponibles
+                                    Console.Write("\n INDIQUE NUMERO DE HABITACIÓN A RESERVAR (Sólo el número): ");
                                     intRoomNumber = Convert.ToInt32(Console.ReadLine());
                                     HpBooks.InsertBook(myDB, strDNI, intRoomNumber, checkIN_OUT);
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("NO ES UN CLIENTE VALIDO, NO PUEDE HACER LA RESERVA");
-                                    Console.ResetColor();
+                                    Console.WriteLine("NO ES UN CLIENTE VALIDO, NO PUEDE HACER LA RESERVA", Color.Red);
+                                    Console.Write("Presione cualquier tecla para continuar...");
                                     Console.ReadLine();
                                     Menu.PrintBookingMenu(); //TODO: imprime nuevamente el menu pero hay que trabajarlo porque cuando imprime nuevamente no funciona bien
                                 }
@@ -104,12 +105,15 @@ namespace SetRooms
                                 {
                                     case 1:
                                         //Modificar CheckIn
+                                        Menu.WriteConstruction();
                                         break;
                                     case 2:
                                         //Modificar CheckOut
+                                        Menu.WriteConstruction();
                                         break;
                                     case 3:
                                         //Modificar Ambas
+                                        Menu.WriteConstruction();
                                         break;
                                     case 4:
                                         //Volver - Bajar un nivel
@@ -122,10 +126,11 @@ namespace SetRooms
                                 break;
                             case 3:
                                 //Eliminar Reservacion
+                                Menu.WriteConstruction();
                                 break;
                             case 4:
                                 //Eliminar Reservacion
-                                menuOp = Menu.PrintMainMenu();
+                                Menu.WriteConstruction();
                                 break;
                             default:
                                 Console.WriteLine("Other");
@@ -153,7 +158,7 @@ namespace SetRooms
                 //{
                 //    exit = true;
                 //}
-                
+
             } while (!exit);
         }
     }

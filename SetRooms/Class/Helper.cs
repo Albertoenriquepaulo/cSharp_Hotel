@@ -53,10 +53,10 @@ namespace SetRooms.Class
                 strDNI = Console.ReadLine();
                 if (strDNI != "0" && !ClientExist1(myDB, strDNI))
                 {
-                Console.Write("Name: ");
-                strFirstName = Console.ReadLine();
-                Console.Write("Last Name: ");
-                strLastName = Console.ReadLine();
+                    Console.Write("Name: ");
+                    strFirstName = Console.ReadLine();
+                    Console.Write("Last Name: ");
+                    strLastName = Console.ReadLine();
                     result = RUDI.Insert(myDB, "Clients", "Name, LastName, DNI", $"'{strFirstName}', '{strLastName}', '{strDNI.ToUpper()}'");
                     if (result == 1)
                     {
@@ -90,9 +90,9 @@ namespace SetRooms.Class
             DataTable dTable;
             if (strDNI.Length == 9)
             {
-                    dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI.ToUpper()}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
-                    if (dTable != null && dTable.Rows.Count > 0)
-                        return true;
+                dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI.ToUpper()}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
+                if (dTable != null && dTable.Rows.Count > 0)
+                    return true;
             }
             return false;
         }

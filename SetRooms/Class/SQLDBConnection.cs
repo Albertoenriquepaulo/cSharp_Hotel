@@ -22,25 +22,15 @@ namespace SetRooms.Class
 
         public bool GetConnection()
         {
-            //SqlConnectionStringBuilder connBuilder = new SqlConnectionStringBuilder();
-            //connBuilder.Add("Database", dbName);
-            //connBuilder.Add("Data Source", hostDS);
-            //connBuilder.Add("User Id", uID);
-            //connBuilder.Add("Password", pwd);
-            //connBuilder.ConnectionString()
-
             Connection = new SqlConnection(connectionString);
-
             try
             {
-
                 Connection.Open();
                 return true;//Console.WriteLine("Conectado");
             }
             catch (Exception)
             {
                 return false;//Console.WriteLine("ERROR");
-                //throw;
             }
         }
 

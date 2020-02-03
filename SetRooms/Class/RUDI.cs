@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-/*using System.Text;
-using System.ComponentModel;*/
-
 using FastMember;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Data;
+using System.Drawing;
+using Console = Colorful.Console;
 
 namespace SetRooms.Class
 {
@@ -42,7 +41,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
             return result;
@@ -61,7 +60,7 @@ namespace SetRooms.Class
 
                 try
                 {
-                   result = myDB.CMD.ExecuteNonQuery();
+                    result = myDB.CMD.ExecuteNonQuery();
                 }
                 catch (SqlException MySqlError)
                 {
@@ -70,7 +69,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
             return result;
@@ -100,7 +99,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
             return result;
@@ -139,7 +138,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
             return dt;
@@ -151,8 +150,10 @@ namespace SetRooms.Class
             string query;
             SqlDataReader readerCollection = null;
             DataTable dt = new DataTable();
-            
+
             query = $"EXECUTE {sp} '{checkIN_OUT[0].ToString("MM/dd/yyyy")}', '{checkIN_OUT[1].ToString("MM/dd/yyyy")}'";
+
+            
 
             if (myDB.GetConnection())
             {
@@ -171,7 +172,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
             return dt;
@@ -182,12 +183,12 @@ namespace SetRooms.Class
 
         //SELECT column1, column2, ... FROM table_name WHERE condition; 
         //https://stackoverflow.com/questions/41040189/fastest-way-to-map-result-of-sqldatareader-to-object
-        public static async Task<T> Read2<T> (SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
+        public static async Task<T> Read2<T>(SQLDBConnection myDB, string table_name, string cols = "*", string condition = null) where T : class, new()
         {
             string query;
             SqlDataReader readerCollection = null;
 
-            
+
             if (condition != null)
             {
                 query = $"SELECT {cols} FROM {table_name} WHERE {condition}";
@@ -213,7 +214,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             myDB.Close();
 
@@ -222,8 +223,8 @@ namespace SetRooms.Class
                 var newObject = new T();
 
                 if (await readerCollection.ReadAsync())
-                { 
-                    MapDataToObject(readerCollection, newObject); 
+                {
+                    MapDataToObject(readerCollection, newObject);
                 }
 
                 return newObject;
@@ -288,7 +289,7 @@ namespace SetRooms.Class
             }
             else
             {
-                Console.WriteLine("ERROR Trying to connect");
+                Console.WriteLine("ERROR Trying to connect", Color.Red);
             }
             List<T> res = new List<T>();
             while (readerCollection.Read())
@@ -309,7 +310,7 @@ namespace SetRooms.Class
             return res;
         }
 
-        
+
 
 
     }

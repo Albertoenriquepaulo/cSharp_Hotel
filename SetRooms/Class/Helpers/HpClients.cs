@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Data;
+using Alba.CsConsoleFormat;
+using ConsoleTables;
+using System.Drawing;
+using Console = Colorful.Console;
 
 namespace SetRooms.Class.Helpers
 {
@@ -25,7 +29,7 @@ namespace SetRooms.Class.Helpers
                     int clientID;
                     dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
                     clientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
-                    Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido creado con exito bajo el ID#: {clientID}");
+                    Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido creado con exito bajo el ID#: {clientID}", Color.Blue);
                     return true;
                 }
                 return false;
@@ -33,23 +37,11 @@ namespace SetRooms.Class.Helpers
             else
             {
                 if (strDNI == "0")
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)");
-                    Console.ResetColor();
-                }
+                    Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)", Color.Red);
                 else if (strDNI.Length != 9)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres");
-                    Console.ResetColor();
-                }
+                    Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres", Color.Red);
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI");
-                    Console.ResetColor();
-                }
+                    Console.WriteLine("ERROR -> El cliente Ya existe en la BD. Intente con otro DNI", Color.Red);
             }
             return false;
         }
@@ -73,31 +65,18 @@ namespace SetRooms.Class.Helpers
                     int clientID;
                     dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
                     clientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
-                    Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido ACTUALIZADO con exito bajo el ID#: {clientID}");
+                    Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido ACTUALIZADO con exito bajo el ID#: {clientID}", Color.Blue);
                     return true;
                 }
             }
             else
             {
                 if (strDNI == "0")
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)");
-                    Console.ResetColor();
-                    
-                }
+                    Console.WriteLine("ERROR -> El DNI del cliente no puede ser Cero (0)", Color.Red);
                 else if (strDNI.Length != 9)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres");
-                    Console.ResetColor();
-                }
+                    Console.WriteLine("ERROR -> El DNI del cliente debe contener 9 caracteres", Color.Red);
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR -> El cliente NO existe en la BD. Intente con otro DNI");
-                    Console.ResetColor();
-                }
+                    Console.WriteLine("ERROR -> El cliente NO existe en la BD. Intente con otro DNI", Color.Red);
             }
             return false;
         }
@@ -121,6 +100,30 @@ namespace SetRooms.Class.Helpers
                     Console.WriteLine();
                 }
             }
+            Console.ReadLine();
+        }
+
+        public static void ShowClientsInTable(SQLDBConnection myDB)
+        {
+            DataTable dTable;
+            Console.WriteLine($"MOSTRANDO TODOS LOS CLIENTES\n");
+            var table = new ConsoleTable("ID", "DNI", "Nombre", "Apellido");
+
+            dTable = RUDI.Read(myDB, "Clients", "ClientID, DNI, Name, LastName");
+            if (dTable != null && dTable.Rows.Count > 0)
+            {
+                foreach (DataRow dataRow in dTable.Rows)
+                {
+                    string[] strInfoToPrint = new string[4];
+                    int i = 0;
+                    foreach (var item in dataRow.ItemArray)
+                    {
+                        strInfoToPrint[i++] = item.ToString();
+                    }
+                    table.AddRow(strInfoToPrint);
+                }
+            }
+            table.Write();
             Console.ReadLine();
         }
 
