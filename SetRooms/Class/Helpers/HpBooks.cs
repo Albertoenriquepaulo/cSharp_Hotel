@@ -39,6 +39,7 @@ namespace SetRooms.Class.Helpers
             if (result > 0)
             {
                 Console.WriteLine("LA RESERVA FUE AÑADIDA CON ÉXITO.", Color.Blue);
+                Menu.WriteContinue();
                 return true;
             }
             return false;

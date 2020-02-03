@@ -45,35 +45,39 @@ namespace SetRooms
                             case 3:
                                 HpClients.ShowClientsInTable(myDB);
                                 break;
-                            case 4:
-                                //Volver
-                                menuOp = Menu.PrintMainMenu();
-                                break;
+                            //case 4:
+                            //    //Volver
+                            //    //menuOp = Menu.PrintMainMenu();
+                            //    break;
                             default:
                                 Console.WriteLine("Other");
                                 break;
                         }
                         break;
                     case 2:
-                        menuOp = Menu.PrintRoomMenu();
-                        switch (menuOp)
+                        do
                         {
-                            case 1:
-                                //Insert Room
-                                HpRooms.InsertRoom(myDB);
-                                break;
-                            case 2:
-                                //Show Rooms -- TODO: Preguntar DNI y dejarlo ver las habitaciones solo si esta registrado
-                                HpRooms.ShowRoomsInTable(myDB, 2);
-                                break;
-                            case 3:
-                                //Volver
-                                menuOp = Menu.PrintMainMenu();
-                                break;
-                            default:
-                                Console.WriteLine("Other");
-                                break;
-                        }
+                            menuOp = Menu.PrintRoomMenu();
+                            switch (menuOp)
+                            {
+                                case 1:
+                                    //Insert Room
+                                    HpRooms.InsertRoom(myDB);
+                                    break;
+                                case 2:
+                                    //Show Rooms -- TODO: Preguntar DNI y dejarlo ver las habitaciones solo si esta registrado
+                                    HpRooms.ShowRoomsInTable(myDB, 2);
+
+                                    break;
+                                //case 3:
+                                //    //Volver
+                                //    //menuOp = Menu.PrintMainMenu();  //TODO: Quizas haya que quitarla
+                                //    break;
+                                default:
+                                    Console.WriteLine("Other");
+                                    break;
+                            }
+                        } while (menuOp > 0 && menuOp < 3);
                         break;
                     case 3:
                         menuOp = Menu.PrintBookingMenu();
@@ -93,45 +97,47 @@ namespace SetRooms
                                 else
                                 {
                                     Console.WriteLine("NO ES UN CLIENTE VALIDO, NO PUEDE HACER LA RESERVA", Color.Red);
-                                    Console.Write("Presione cualquier tecla para continuar...");
-                                    Console.ReadLine();
-                                    Menu.PrintBookingMenu(); //TODO: imprime nuevamente el menu pero hay que trabajarlo porque cuando imprime nuevamente no funciona bien
+                                    Menu.WriteContinue();
+                                    // Menu.PrintBookingMenu(); //TODO: imprime nuevamente el menu pero hay que trabajarlo porque cuando imprime nuevamente no funciona bien
                                 }
                                 break;
                             case 2:
                                 //Modificar Reservacion - ir a otro menu
-                                menuOp = Menu.PrintBookingLowLevelMenu();
-                                switch (menuOp)
+                                do
                                 {
-                                    case 1:
-                                        //Modificar CheckIn
-                                        Menu.WriteConstruction();
-                                        break;
-                                    case 2:
-                                        //Modificar CheckOut
-                                        Menu.WriteConstruction();
-                                        break;
-                                    case 3:
-                                        //Modificar Ambas
-                                        Menu.WriteConstruction();
-                                        break;
-                                    case 4:
-                                        //Volver - Bajar un nivel
-                                        menuOp = Menu.PrintBookingMenu();
-                                        break;
-                                    default:
-                                        Console.WriteLine("Other");
-                                        break;
-                                }
+                                    menuOp = Menu.PrintBookingLowLevelMenu();
+                                    switch (menuOp)
+                                    {
+                                        case 1:
+                                            //Modificar CheckIn
+                                            Menu.WriteConstruction();
+                                            break;
+                                        case 2:
+                                            //Modificar CheckOut
+                                            Menu.WriteConstruction();
+                                            break;
+                                        case 3:
+                                            //Modificar Ambas
+                                            Menu.WriteConstruction();
+                                            break;
+                                        case 4:
+                                            //Volver - Bajar un nivel
+                                            menuOp = Menu.PrintBookingMenu();
+                                            break;
+                                        default:
+                                            Console.WriteLine("Other");
+                                            break;
+                                    }
+                                } while (menuOp > 0 && menuOp < 4);
                                 break;
                             case 3:
                                 //Eliminar Reservacion
                                 Menu.WriteConstruction();
                                 break;
-                            case 4:
-                                //Eliminar Reservacion
-                                Menu.WriteConstruction();
-                                break;
+                            //case 4:
+                            //    //Eliminar Reservacion
+                            //    Menu.WriteConstruction();
+                            //    break;
                             default:
                                 Console.WriteLine("Other");
                                 break;

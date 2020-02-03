@@ -30,6 +30,7 @@ namespace SetRooms.Class.Helpers
                     dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
                     clientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
                     Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido creado con exito bajo el ID#: {clientID}", Color.Blue);
+                    Menu.WriteContinue();
                     return true;
                 }
                 return false;
@@ -66,6 +67,7 @@ namespace SetRooms.Class.Helpers
                     dTable = RUDI.Read(myDB, "Clients", "ClientID", $"DNI LIKE '{strDNI}'");  //SELECT ClientID FROM Clients WHERE DNI = strDNI
                     clientID = Convert.ToInt32(dTable.Rows[0]["ClientID"]);
                     Console.WriteLine($"El cliente '{strFirstName} {strLastName}' ha sido ACTUALIZADO con exito bajo el ID#: {clientID}", Color.Blue);
+                    Menu.WriteContinue();
                     return true;
                 }
             }
@@ -124,7 +126,7 @@ namespace SetRooms.Class.Helpers
                 }
             }
             table.Write();
-            Console.ReadLine();
+            Menu.WriteContinue();
         }
 
         // Recibe DNI y busca si el cliente existe en la DB

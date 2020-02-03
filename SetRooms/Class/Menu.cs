@@ -88,7 +88,7 @@ namespace SetRooms.Class
             Console.WriteLineAlternating("\t(1) RESERVAR (FECHA INICIAL Y FECHA FINAL)", alternator);
             Console.WriteLineAlternating("\t(2) MODIFICAR RESERVACION EXISTENTE", alternator);
             Console.WriteLineAlternating("\t(3) ELIMINAR RESERVACION EXISTENTE", alternator);
-            Console.WriteLineAlternating("\t(3) VOLVER", alternator);
+            Console.WriteLineAlternating("\t(4) VOLVER", alternator);
             Console.Write("\nOpcion: ");
             return Convert.ToInt32(Console.ReadLine());
         }

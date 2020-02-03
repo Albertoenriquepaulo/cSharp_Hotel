@@ -30,6 +30,7 @@ namespace SetRooms.Class.Helpers
                         dTable = RUDI.Read(myDB, "Rooms", "RoomID", $"RoomNumber = {roomNumber}");  //SELECT RoomID FROM Rooms WHERE RoomNumber = roomNumber
                         roomID = Convert.ToInt32(dTable.Rows[0]["RoomID"]);
                         Console.WriteLine($"La Habitación {roomNumber} ha sido añadida con exito bajo el ID#: {roomID}", Color.Blue);
+                        Menu.WriteContinue();
 
                     }
                     exit = false;
@@ -38,7 +39,7 @@ namespace SetRooms.Class.Helpers
                 {
                     exit = true;
                 }
-            } while (!exit);
+            } while (false);
         }
 
         //Mostrar clientes de la DB
@@ -128,7 +129,7 @@ namespace SetRooms.Class.Helpers
                 }
             }
             table.Write();
-            Console.ReadLine();
+            Menu.WriteContinue();
         }
 
         public static bool RoomExist(SQLDBConnection myDB, int intRoomNumber)
