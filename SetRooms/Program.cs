@@ -9,6 +9,7 @@ namespace SetRooms
 {
     class Program
     {
+        //Clean Project with All Nugets PAcket Installed
         public static SQLDBConnection myDB;
         static void Main(string[] args)
         {
