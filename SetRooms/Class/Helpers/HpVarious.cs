@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using Console = Colorful.Console;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
 namespace SetRooms.Class.Helpers
 {
-    class HpVarious
+    public static class HpVarious
     {
         public static Boolean IsDate(String date)
         {
